@@ -16,12 +16,12 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { supabase, isSupabaseConfigured } from './supabase'
 
 const AuthCtx = createContext(null)
-const STORAGE_KEY = 'ccms.auth.user'
+const STORAGE_KEY = 'jais.auth.user'
 
 // Single demo profile. Logged-in user can switch roles from the topbar
 // dropdown to test reviewer / approver / officer permissions.
 export const DEMO_CREDENTIALS = {
-  email: 'demo@ccms.gov.in',
+  email: 'demo@jais.gov.in',
   password: 'demo1234',
 }
 

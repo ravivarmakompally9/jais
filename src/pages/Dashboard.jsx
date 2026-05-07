@@ -51,7 +51,7 @@ export default function Dashboard() {
     <div className="space-y-7">
       <PageHeader
         eyebrow="Centre for e-Governance"
-        title="Court Case Monitoring System"
+        title="Judgment AI System"
         sub="A trusted overview of verified judgments and the actions they require. AI accelerates the read; humans approve every record before it appears here."
         right={
           <div className="flex items-center gap-2 rounded-full bg-success-soft px-3 py-1.5 text-xs font-semibold text-success ring-1 ring-success/30">

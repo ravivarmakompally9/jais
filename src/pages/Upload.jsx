@@ -155,7 +155,7 @@ export default function Upload() {
                 </span>
               </div>
               <p className="mt-1 max-w-xl text-sm text-muted">
-                In production, CCMS connects to the High Court's Court Information System and
+                In production, JAIS connects to the High Court's Court Information System and
                 automatically fetches judgment copies in PDF format once a case is disposed of.
               </p>
               <div className="mt-2 flex items-center gap-2 text-[11px] text-muted">

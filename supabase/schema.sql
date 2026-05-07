@@ -1,5 +1,5 @@
 -- =====================================================================
--- CCMS — Court Case Monitoring System
+-- JAIS — Judgment AI System
 -- Supabase / PostgreSQL schema
 -- Run this in the Supabase SQL editor (or via psql) on a fresh project.
 -- =====================================================================
@@ -123,7 +123,7 @@ create index if not exists actions_status_idx     on public.actions (status);
 
 -- =========================
 -- judgment_pages — synthetic page text used for in-PDF highlighting
---   When CCMS pulls a judgment from CIS, the parsed text is stored
+--   When JAIS pulls a judgment from CIS, the parsed text is stored
 --   page-by-page so the verifier can see source quotes highlighted in
 --   place (the spec calls this "source highlights from PDF").
 -- =========================

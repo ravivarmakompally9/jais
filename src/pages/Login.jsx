@@ -60,9 +60,9 @@ export default function Login() {
               <Scale className="h-5 w-5" strokeWidth={2.2} />
             </span>
             <div className="leading-tight">
-              <div className="font-serif text-xl font-semibold text-white">CCMS</div>
+              <div className="font-serif text-xl font-semibold text-white">JAIS</div>
               <div className="text-[11px] uppercase tracking-[0.18em] text-white/50">
-                Court Case Monitoring System
+                Judgment AI System
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function Login() {
             <span className="flex h-10 w-10 items-center justify-center rounded-md bg-sidebar text-gold">
               <Scale className="h-5 w-5" strokeWidth={2.2} />
             </span>
-            <span className="font-serif text-xl font-semibold text-ink">CCMS</span>
+            <span className="font-serif text-xl font-semibold text-ink">JAIS</span>
           </div>
 
           <h2 className="font-serif text-2xl font-semibold text-ink">Sign in</h2>

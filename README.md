@@ -1,4 +1,4 @@
-# CCMS — Court Case Monitoring System
+# JAIS — Judgment AI System
 
 AI-powered judgment-extraction + human-verified action plans, built for the Centre for e-Governance (Government of Telangana).
 

@@ -50,7 +50,7 @@ export default function Sidebar() {
             <Scale className="h-5 w-5" strokeWidth={2.2} />
           </span>
           <div className="leading-tight">
-            <div className="font-serif text-lg font-semibold text-white">CCMS</div>
+            <div className="font-serif text-lg font-semibold text-white">JAIS</div>
             <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">
               Case Monitoring
             </div>

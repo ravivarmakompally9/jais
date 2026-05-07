@@ -43,7 +43,7 @@ export default function CauseList() {
       <PageHeader
         eyebrow="Overview"
         title="Daily Cause List"
-        sub="Today's and upcoming hearings as fetched from the High Court CIS. Items linked to a CCMS case open the case detail; unlinked entries are awaiting first ingest."
+        sub="Today's and upcoming hearings as fetched from the High Court CIS. Items linked to a JAIS case open the case detail; unlinked entries are awaiting first ingest."
         right={
           <div className="flex items-center gap-2 rounded-full bg-info-soft px-3 py-1.5 text-xs font-semibold text-info ring-1 ring-info/30">
             <ListOrdered className="h-3.5 w-3.5" strokeWidth={2.2} />
@@ -119,7 +119,7 @@ function Row({ entry, linked }) {
                 {entry.listing_type.replace('_', ' ')}
               </Badge>
             )}
-            {linked && <Badge variant="info">In CCMS</Badge>}
+            {linked && <Badge variant="info">In JAIS</Badge>}
             {!linked && <Badge variant="muted">Not yet ingested</Badge>}
           </div>
           <h3 className="mt-1 truncate font-medium text-ink group-hover:underline">
