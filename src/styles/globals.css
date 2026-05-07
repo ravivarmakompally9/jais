@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ====================================================================
+   CCMS — global styles
+   ==================================================================== */
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink antialiased;
+    font-family: 'Outfit', system-ui, sans-serif;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    @apply bg-gold/30 text-ink;
+  }
+
+  /* Date input — make it match the design language */
+  input[type='date'] {
+    color-scheme: light;
+  }
+
+  /* Subtle scrollbars */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-line;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted/60;
+  }
+}
+
+@layer utilities {
+  /* Standard line-clamp helpers (Tailwind v3.3+ ships these — included as fallback) */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
