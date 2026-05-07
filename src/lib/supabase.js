@@ -45,11 +45,51 @@ export async function fetchCasesFull({ status } = {}) {
   if (!supabase) return null
   const cases = await fetchCases({ status })
   if (!cases?.length) return []
-  return Promise.all(cases.map((c) => fetchCaseById(c.id)))
+  // Defensive: if the upstream list contains duplicates for any reason,
+  // avoid duplicated UI entries.
+  const uniq = []
+  const seen = new Set()
+  for (const c of cases) {
+    if (!c?.id || seen.has(c.id)) continue
+    seen.add(c.id)
+    uniq.push(c)
+  }
+  return Promise.all(uniq.map((c) => fetchCaseById(c.id)))
 }
 
 export async function insertExtractedCase(extracted, pdfUrl, origin = 'manual_upload', diaryNo = null) {
   if (!supabase) throw new Error('Supabase not configured')
+
+  // Best-effort de-duplication:
+  // - CIS ingests should be unique by cis_diary_no
+  // - Manual uploads can be re-submitted; prevent obvious duplicates by case_number + date_of_order + title
+  try {
+    if (diaryNo) {
+      const { data } = await supabase
+        .from('cases')
+        .select('id')
+        .eq('cis_diary_no', diaryNo)
+        .limit(1)
+      if (data?.[0]?.id) return data[0].id
+    } else {
+      const caseNumber = extracted.caseNumber || extracted.case_number
+      const dateOfOrder = extracted.dateOfOrder || extracted.date_of_order
+      const title = extracted.title
+      if (caseNumber && dateOfOrder && title) {
+        const { data } = await supabase
+          .from('cases')
+          .select('id')
+          .eq('case_number', caseNumber)
+          .eq('date_of_order', dateOfOrder)
+          .eq('title', title)
+          .order('created_at', { ascending: false })
+          .limit(1)
+        if (data?.[0]?.id) return data[0].id
+      }
+    }
+  } catch {
+    // Ignore de-dup probe errors; proceed with insert.
+  }
 
   const directions = extracted.directions || []
   const avgConf = directions.length

@@ -81,8 +81,16 @@ function useSubscribed(loader, deps = []) {
 
 export function useAllCases() {
   const { data, loading, error, reload } = useSubscribed(async () => {
-    if (isSupabaseConfigured) return (await fetchCasesFull()) || []
-    return clone(memoryCases)
+    const arr = isSupabaseConfigured ? (await fetchCasesFull()) || [] : clone(memoryCases)
+    // Defensive: keep UI stable even if upstream data repeats.
+    const out = []
+    const seen = new Set()
+    for (const c of arr) {
+      if (!c?.id || seen.has(c.id)) continue
+      seen.add(c.id)
+      out.push(c)
+    }
+    return out
   })
   return { cases: data, loading, error, reload }
 }
@@ -445,6 +453,23 @@ function formatNow() {
 // Adding an extracted case in demo mode
 // ---------------------------------------------------------------
 export function addExtractedCaseLocal(extracted, pdfUrl, origin = 'manual_upload', diaryNo = null) {
+  // Best-effort de-duplication for demo mode
+  const caseNumber = extracted.caseNumber || extracted.case_number
+  const dateOfOrder = extracted.dateOfOrder || extracted.date_of_order
+  const title = extracted.title
+  const existing = memoryCases.find((c) => {
+    if (diaryNo && c.cis_diary_no) return c.cis_diary_no === diaryNo
+    return (
+      caseNumber &&
+      dateOfOrder &&
+      title &&
+      c.case_number === caseNumber &&
+      c.date_of_order === dateOfOrder &&
+      c.title === title
+    )
+  })
+  if (existing?.id) return existing.id
+
   const id = rid('case')
   const directions = (extracted.directions || []).map((d, i) => ({
     id: `${id}-d${i}`,

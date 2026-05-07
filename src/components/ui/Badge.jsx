@@ -66,7 +66,7 @@ export default function Badge({ variant = 'muted', children, className, icon: Ic
       )}
     >
       {dot && <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70" />}
-      {Icon && <Icon className="h-3 w-3" strokeWidth={2.4} />}
+      {Icon && <Icon className="h-3 w-3" strokeWidth={2.2} />}
       {display}
     </span>
   )

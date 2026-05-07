@@ -11,6 +11,7 @@ import CauseList from './pages/CauseList'
 import Calendar from './pages/Calendar'
 import ActionPlan from './pages/ActionPlan'
 import Login from './pages/Login'
+import Instructions from './pages/Instructions'
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/cause-list" element={<CauseList />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/action-plan" element={<ActionPlan />} />
+        <Route path="/instructions" element={<Instructions />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

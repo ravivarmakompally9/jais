@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Search, ChevronRight, CheckCircle2, Clock, XCircle } from 'lucide-react'
 import PageHeader from '../components/ui/PageHeader'
 import Badge from '../components/ui/Badge'
@@ -22,7 +22,8 @@ const STATUS_ICON = {
 
 export default function Cases() {
   const { cases, loading } = useAllCases()
-  const [q, setQ] = useState('')
+  const [params] = useSearchParams()
+  const [q, setQ] = useState(() => params.get('q') || '')
   const [filter, setFilter] = useState('all')
 
   const list = useMemo(() => {

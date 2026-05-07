@@ -138,7 +138,7 @@ export default function Topbar() {
 }
 
 function initials(name) {
-  if (!name) return 'CC'
+  if (!name) return 'JA'
   return name
     .split(/\s+/)
     .filter(Boolean)

@@ -26,8 +26,17 @@ export default function Dashboard() {
   const verified = cases.filter((c) => c.status === 'verified')
   const pending = cases.filter((c) => c.status === 'pending')
   const reviewed = cases.filter((c) => c.status === 'reviewed')
+  const inReview = [...reviewed, ...pending]
 
-  const allActions = verified.flatMap((c) => (c.actions || []).map((a) => ({ ...a, case: c })))
+  // Dashboard remains "trusted" (verified-only), but we also preview upcoming items
+  // from in-review cases so the UI doesn't look empty during onboarding.
+  const trustedActions = verified.flatMap((c) =>
+    (c.actions || []).map((a) => ({ ...a, case: c, _trusted: true }))
+  )
+  const previewActions = inReview.flatMap((c) =>
+    (c.actions || []).map((a) => ({ ...a, case: c, _trusted: false }))
+  )
+  const allActions = [...trustedActions, ...previewActions]
   const criticalActions = allActions.filter((a) => a.priority === 'critical')
   const completedActions = allActions.filter((a) => a.status === 'completed')
   const compliancePct = allActions.length
@@ -43,9 +52,11 @@ export default function Dashboard() {
     .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
     .slice(0, 6)
 
-  const recent = [...verified]
+  const trustedRecent = [...verified]
     .sort((a, b) => new Date(b.verified_at || b.created_at) - new Date(a.verified_at || a.created_at))
     .slice(0, 6)
+  const previewRecent = [...inReview].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 6)
+  const recent = trustedRecent.length ? trustedRecent : previewRecent
 
   return (
     <div className="space-y-7">
@@ -98,7 +109,9 @@ export default function Dashboard() {
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <div>
               <h2 className="font-serif text-lg font-semibold text-ink">Recent Cases</h2>
-              <p className="mt-0.5 text-xs text-muted">Verified judgments, latest first</p>
+              <p className="mt-0.5 text-xs text-muted">
+                {trustedRecent.length ? 'Verified judgments, latest first' : 'In-review cases (not yet verified)'}
+              </p>
             </div>
             <Link
               to="/cases"
@@ -129,6 +142,7 @@ export default function Dashboard() {
                           <span className="font-mono text-xs font-semibold text-muted">{c.case_number}</span>
                           {c.dept_role && <Badge variant={c.dept_role}>{c.dept_role}</Badge>}
                           {c.cis_origin === 'cis_api' && <Badge variant="info">CIS</Badge>}
+                          {c.status !== 'verified' && <Badge variant="warning">In review</Badge>}
                         </div>
                         <h3 className="mt-1 truncate font-medium text-ink group-hover:underline">
                           {c.title}
@@ -150,7 +164,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
             <div>
               <h2 className="font-serif text-lg font-semibold text-ink">Upcoming Deadlines</h2>
-              <p className="mt-0.5 text-xs text-muted">Open actions · soonest first</p>
+              <p className="mt-0.5 text-xs text-muted">Open actions · soonest first (includes in-review)</p>
             </div>
             <Clock3 className="h-4 w-4 text-muted" strokeWidth={2.2} />
           </div>
@@ -163,7 +177,7 @@ export default function Dashboard() {
                 const overdue = days != null && days < 0
                 const close = days != null && days <= 30 && days >= 0
                 return (
-                  <li key={a.id} className="px-5 py-4">
+                  <li key={`${a.case.id}-${a.id}`} className="px-5 py-4">
                     <div className="flex items-center justify-between gap-3">
                       <span className="font-mono text-[11px] font-semibold text-muted">
                         {a.case.case_number}
@@ -180,6 +194,7 @@ export default function Dashboard() {
                     <p className="mt-1 line-clamp-2 text-sm text-ink">{a.description}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <Badge variant={a.nature_of_action}>{a.nature_of_action}</Badge>
+                      {!a._trusted && <Badge variant="warning">In review</Badge>}
                       {a.status === 'in_progress' && <Badge variant="warning">In progress</Badge>}
                       <span className="inline-flex items-center gap-1 text-[11px] text-muted">
                         <Building2 className="h-3 w-3" />

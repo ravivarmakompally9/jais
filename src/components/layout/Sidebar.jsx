@@ -11,6 +11,7 @@ import {
   CalendarDays,
   ListOrdered,
   Sparkles,
+  BookOpen,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
@@ -21,6 +22,7 @@ const SECTIONS = [
       { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
       { to: '/cases', label: 'All Cases', icon: Files },
       { to: '/cause-list', label: 'Cause List', icon: ListOrdered },
+      { to: '/instructions', label: 'Project Instructions', icon: BookOpen },
     ],
   },
   {
